@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kino — Online Shopping</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f6f7fb;color:#172033}
+header{background:#111827;color:white;padding:16px 6%;display:flex;align-items:center;gap:25px;position:sticky;top:0;z-index:10}
+.logo{font-size:28px;font-weight:800;color:#60a5fa}.search{flex:1;max-width:600px}
+.search input{width:100%;padding:12px 16px;border:0;border-radius:10px;font-size:15px}
+.cart{cursor:pointer;font-weight:bold}.hero{padding:55px 6%;background:linear-gradient(135deg,#dbeafe,#eef2ff);display:flex;align-items:center;justify-content:space-between;gap:30px}
+.hero h1{font-size:42px;margin-bottom:12px}.hero p{font-size:18px;color:#475569;margin-bottom:22px}
+.btn{border:0;background:#2563eb;color:white;padding:13px 22px;border-radius:9px;font-weight:bold;cursor:pointer}
+.categories,.products{padding:35px 6%}.categories h2,.products h2{margin-bottom:20px}
+.catgrid{display:flex;gap:12px;flex-wrap:wrap}.cat{background:white;padding:14px 20px;border-radius:10px;box-shadow:0 2px 8px #00000010;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 3px 12px #00000012}
+.pic{height:190px;display:flex;align-items:center;justify-content:center;font-size:70px;background:#eef2ff}
+.info{padding:16px}.info h3{font-size:17px;margin-bottom:8px}.price{font-size:20px;font-weight:800;margin:10px 0}.add{width:100%;padding:10px;border:0;border-radius:8px;background:#111827;color:white;cursor:pointer}
+footer{text-align:center;padding:30px;background:#111827;color:#cbd5e1;margin-top:20px}
+@media(max-width:700px){header{flex-wrap:wrap}.search{order:3;flex-basis:100%}.hero h1{font-size:32px}.hero{padding:35px 6%}}
+</style>
+
+<style id="kino-shorts-css">
+.kino-shorts{margin:28px 0;padding:20px;border-radius:22px;background:linear-gradient(135deg,#111827,#1f2937);color:#fff}
+.kino-shorts-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.kino-shorts-head h2{margin:0;font-size:24px}.kino-shorts-head p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
+.kino-shorts-feed{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.kino-short{position:relative;min-width:220px;width:220px;height:390px;border-radius:18px;overflow:hidden;background:#0f172a;scroll-snap-align:start;box-shadow:0 8px 25px rgba(0,0,0,.25)}
+.kino-short video{width:100%;height:100%;object-fit:cover;display:block}
+.kino-short::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.85))}
+.kino-short-info{position:absolute;z-index:2;left:14px;right:14px;bottom:14px}
+.kino-short-info h3{margin:0 0 4px;font-size:17px}.kino-short-info .price{font-weight:700;margin-bottom:9px}
+.kino-short-actions{display:flex;gap:7px}
+.kino-short-actions button{border:0;border-radius:9px;padding:9px 11px;font-weight:700;cursor:pointer}
+.kino-buy{background:#22c55e;color:#052e16}.kino-cart{background:#fff;color:#111827}
+.kino-mute{position:absolute;z-index:3;right:10px;top:10px;border:0;border-radius:50%;width:38px;height:38px;background:rgba(0,0,0,.55);color:#fff;cursor:pointer}
+.kino-short-badge{position:absolute;z-index:3;left:10px;top:10px;background:#ef4444;padding:5px 8px;border-radius:7px;font-size:11px;font-weight:700}
+@media(max-width:600px){.kino-short{min-width:190px;width:190px;height:340px}.kino-shorts{padding:15px}.kino-shorts-head h2{font-size:20px}}
+</style>
+
+</head>
+<body>
+
+<section class="kino-shorts" id="kinoShorts">
+  <div class="kino-shorts-head">
+    <div>
+      <h2>🎬 Kino Shorts</h2>
+      <p>Short video দেখুন • পণ্য পছন্দ হলে সরাসরি কিনুন</p>
+    </div>
+    <span style="font-size:12px;color:#94a3b8">Swipe →</span>
+  </div>
+  <div class="kino-shorts-feed">
+    <article class="kino-short" data-product="Wireless Headphones" data-price="1290">
+      <video playsinline loop muted preload="metadata"
+        src="https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4"></video>
+      <button class="kino-mute" onclick="toggleKinoVideo(this)">🔇</button>
+      <span class="kino-short-badge">NEW</span>
+      <div class="kino-short-info">
+        <h3>Wireless Headphones</h3>
+        <div class="price">৳1,290</div>
+        <div class="kino-short-actions">
+          <button class="kino-buy" onclick="kinoShortBuy(this)">Buy Now</button>
+          <button class="kino-cart" onclick="kinoShortCart(this)">🛒</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="kino-short" data-product="Smart Watch" data-price="1890">
+      <video playsinline loop muted preload="metadata"
+        src="https://storage.googleapis.com/coverr-main/mp4/Footboys.mp4"></video>
+      <button class="kino-mute" onclick="toggleKinoVideo(this)">🔇</button>
+      <span class="kino-short-badge">HOT</span>
+      <div class="kino-short-info">
+        <h3>Smart Watch</h3>
+        <div class="price">৳1,890</div>
+        <div class="kino-short-actions">
+          <button class="kino-buy" onclick="kinoShortBuy(this)">Buy Now</button>
+          <button class="kino-cart" onclick="kinoShortCart(this)">🛒</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="kino-short" data-product="Premium Backpack" data-price="990">
+      <video playsinline loop muted preload="metadata"
+        src="https://storage.googleapis.com/coverr-main/mp4/Working-from-home.mp4"></video>
+      <button class="kino-mute" onclick="toggleKinoVideo(this)">🔇</button>
+      <span class="kino-short-badge">SALE</span>
+      <div class="kino-short-info">
+        <h3>Premium Backpack</h3>
+        <div class="price">৳990</div>
+        <div class="kino-short-actions">
+          <button class="kino-buy" onclick="kinoShortBuy(this)">Buy Now</button>
+          <button class="kino-cart" onclick="kinoShortCart(this)">🛒</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<header>
+  <div class="logo">Kino</div>
+  <div class="search"><input id="search" placeholder="পণ্য খুঁজুন..." oninput="render()"></div>
+  <div class="cart">🛒 Cart: <span id="count">0</span></div>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Kino-তে কেনাকাটা করুন</h1>
+    <p>দৈনন্দিন প্রয়োজনীয় পণ্য, গ্যাজেট ও ফ্যাশন—এক জায়গায়।</p>
+    <button class="btn" onclick="document.getElementById('products').scrollIntoView()">এখনই কেনাকাটা করুন</button>
+  </div>
+  <div style="font-size:100px">🛍️</div>
+</section>
+
+<section class="categories">
+<h2>ক্যাটাগরি</h2>
+<div class="catgrid">
+  <div class="cat" onclick="filter('সব')">সব</div><div class="cat" onclick="filter('ইলেকট্রনিক্স')">📱 ইলেকট্রনিক্স</div>
+  <div class="cat" onclick="filter('ফ্যাশন')">👕 ফ্যাশন</div><div class="cat" onclick="filter('হোম')">🏠 হোম</div>
+</div>
+</section>
+
+<section class="products" id="products">
+<h2>জনপ্রিয় পণ্য</h2>
+<div class="grid" id="grid"></div>
+</section>
+
+<footer>© 2026 Kino — Your simple online shopping store</footer>
+
+<script>
+const products=[
+{name:'স্মার্টফোন',price:15999,cat:'ইলেকট্রনিক্স',icon:'📱'},
+{name:'ওয়্যারলেস হেডফোন',price:2499,cat:'ইলেকট্রনিক্স',icon:'🎧'},
+{name:'স্মার্ট ওয়াচ',price:3299,cat:'ইলেকট্রনিক্স',icon:'⌚'},
+{name:'ক্যাজুয়াল টি-শার্ট',price:799,cat:'ফ্যাশন',icon:'👕'},
+{name:'ব্যাকপ্যাক',price:1299,cat:'ফ্যাশন',icon:'🎒'},
+{name:'টেবিল ল্যাম্প',price:999,cat:'হোম',icon:'💡'}
+];
+let selected='সব',cart=0;
+function filter(c){selected=c;render()}
+function render(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const list=products.filter(p=>(selected==='সব'||p.cat===selected)&&p.name.toLowerCase().includes(q));
+ document.getElementById('grid').innerHTML=list.map(p=>`<div class="card"><div class="pic">${p.icon}</div><div class="info"><h3>${p.name}</h3><small>${p.cat}</small><div class="price">৳${p.price.toLocaleString('bn-BD')}</div><button class="add" onclick="add()">কার্টে যোগ করুন</button></div></div>`).join('');
+}
+function add(){cart++;document.getElementById('count').textContent=cart}
+render();
+</script>
+
+<!-- Kino extended features -->
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modalbox" id="modalbox"></div>
+</div>
+
+<style>
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center;padding:18px}
+.modalbox{background:white;border-radius:16px;padding:24px;max-width:520px;width:100%;max-height:90vh;overflow:auto}
+.modalbox h2{margin-bottom:16px}.modalbox input,.modalbox select{width:100%;padding:11px;margin:7px 0 12px;border:1px solid #d1d5db;border-radius:8px}
+.navbtn{background:#1f2937;color:white;border:0;padding:9px 12px;border-radius:8px;cursor:pointer}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin:10px 0}
+.adminbar{padding:15px 6%;background:#e0e7ff;display:flex;gap:8px;flex-wrap:wrap}
+.order{border:1px solid #e5e7eb;padding:12px;border-radius:10px;margin:8px 0}
+.chatWrap{max-width:850px!important;width:100%!important;padding:0!important;overflow:hidden!important}.chatTop{padding:18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb}.chatUsers{display:flex;gap:8px;padding:10px;overflow-x:auto;border-bottom:1px solid #e5e7eb}.chatUser{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:8px 12px;display:flex;gap:8px;align-items:center;cursor:pointer;min-width:130px}.chatUser.active{background:#dbeafe;border-color:#2563eb}.chatUser small,.conversationHead small{display:block;color:#64748b;margin-top:3px}.avatar{font-size:28px}.chatArea{height:480px;display:flex;flex-direction:column}.conversationHead{padding:12px 16px;border-bottom:1px solid #e5e7eb;display:flex;gap:10px;align-items:center}.messages{flex:1;overflow:auto;padding:16px;background:#f8fafc}.msg{max-width:75%;padding:9px 12px;border-radius:14px;margin:7px 0;word-break:break-word}.msg.mine{margin-left:auto;background:#2563eb;color:white;border-bottom-right-radius:4px}.msg.theirs{margin-right:auto;background:white;border:1px solid #e5e7eb;border-bottom-left-radius:4px}.msg small{display:block;font-size:10px;opacity:.75;margin-top:4px}.msg button{border:0;background:transparent;color:inherit;text-decoration:underline;cursor:pointer}.sendBox{display:flex;gap:8px;padding:12px;border-top:1px solid #e5e7eb;background:white}.sendBox input{flex:1;padding:12px;border:1px solid #d1d5db;border-radius:9px}.chatEmpty{margin:auto;color:#64748b;text-align:center;padding:25px}@media(max-width:700px){.chatArea{height:60vh}.chatUser{min-width:115px}}
+</style>
+
+<script>
+let currentUser=null, orders=[], adminProducts=[...products];
+
+function openModal(content){document.getElementById('modalbox').innerHTML=content;document.getElementById('modal').style.display='flex'}
+function closeModal(){document.getElementById('modal').style.display='none'}
+
+function login(){
+openModal(`<h2>🔐 Kino Login</h2>
+<input id="loginName" placeholder="আপনার নাম">
+<input id="loginEmail" type="email" placeholder="ইমেইল">
+<button class="btn" onclick="doLogin()">Login</button>
+<button class="navbtn" onclick="closeModal()">বন্ধ করুন</button>`);
+}
+function doLogin(){
+let n=document.getElementById('loginName').value.trim();
+let e=document.getElementById('loginEmail').value.trim();
+if(!n||!e){alert('নাম ও ইমেইল দিন');return}
+currentUser={name:n,email:e};closeModal();updateHeader();alert('Kino-তে স্বাগতম, '+n+'!');
+}
+function updateHeader(){
+let old=document.getElementById('userbtn');
+if(old) old.remove();
+let b=document.createElement('button');b.id='userbtn';b.className='navbtn';
+b.textContent=currentUser?'👤 '+currentUser.name:'🔐 Login';b.onclick=currentUser?logout:login;
+document.querySelector('header').appendChild(b);
+}
+function logout(){currentUser=null;updateHeader();}
+
+function cartView(){
+let items=JSON.parse(localStorage.getItem('kinoCart')||'[]');
+let total=items.reduce((s,x)=>s+x.price,0);
+openModal(`<h2>🛒 আপনার কার্ট</h2>
+${items.length?items.map((x,i)=>`<div class="row"><span>${x.icon} ${x.name}</span><b>৳${x.price.toLocaleString('bn-BD')}</b></div>`).join(''):'কার্ট খালি।'}
+<hr><div class="row"><b>মোট</b><b>৳${total.toLocaleString('bn-BD')}</b></div>
+<button class="btn" onclick="checkout()">অর্ডার করুন</button> <button class="navbtn" onclick="closeModal()">বন্ধ</button>`);
+}
+function add(){
+cart++;document.getElementById('count').textContent=cart;
+let name=event.target.closest('.card').querySelector('h3').textContent;
+let item=adminProducts.find(x=>x.name===name);
+let items=JSON.parse(localStorage.getItem('kinoCart')||'[]');items.push(item);localStorage.setItem('kinoCart',JSON.stringify(items));
+}
+function checkout(){
+if(!currentUser){closeModal();login();return}
+let items=JSON.parse(localStorage.getItem('kinoCart')||'[]');
+if(!items.length){alert('কার্ট খালি');return}
+openModal(`<h2>📦 Checkout</h2>
+<p><b>Customer:</b> ${currentUser.name}</p>
+<input id="phone" placeholder="মোবাইল নম্বর">
+<input id="address" placeholder="ডেলিভারি ঠিকানা">
+<select id="pay"><option>Cash on Delivery</option><option>bKash</option><option>Nagad</option></select>
+<button class="btn" onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>`);
+}
+function placeOrder(){
+let phone=document.getElementById('phone').value, address=document.getElementById('address').value;
+if(!phone||!address){alert('মোবাইল ও ঠিকানা দিন');return}
+let items=JSON.parse(localStorage.getItem('kinoCart')||'[]');
+let order={id:'KNO-'+Date.now().toString().slice(-6),user:currentUser,items,phone,address,payment:document.getElementById('pay').value,status:'Pending'};
+orders.push(order);localStorage.setItem('kinoOrders',JSON.stringify(orders));
+localStorage.removeItem('kinoCart');cart=0;document.getElementById('count').textContent=0;
+openModal(`<h2>✅ অর্ডার সফল!</h2><p>আপনার Order ID: <b>${order.id}</b></p><p>Payment: ${order.payment}</p><p>আপনার অর্ডার এখন Pending অবস্থায় আছে।</p><button class="btn" onclick="closeModal()">ঠিক আছে</button>`);
+}
+function myOrders(){
+orders=JSON.parse(localStorage.getItem('kinoOrders')||'[]');
+let mine=orders.filter(o=>currentUser&&o.user.email===currentUser.email);
+openModal(`<h2>📦 My Orders</h2>${mine.length?mine.map(o=>`<div class="order"><b>${o.id}</b><br>৳${o.items.reduce((s,x)=>s+x.price,0).toLocaleString('bn-BD')} — ${o.status}<br>Payment: ${o.payment}</div>`).join(''):'কোনো অর্ডার নেই।'}<button class="navbtn" onclick="closeModal()">বন্ধ</button>`);
+}
+function admin(){
+openModal(`<h2>⚙️ Kino Admin Panel</h2>
+<p>Demo admin panel — এখানে নতুন পণ্য যোগ করা যাবে।</p>
+<input id="pn" placeholder="পণ্যের নাম"><input id="pp" type="number" placeholder="দাম">
+<select id="pc"><option>ইলেকট্রনিক্স</option><option>ফ্যাশন</option><option>হোম</option></select>
+<input id="pi" placeholder="Emoji/Icon যেমন 📱">
+<button class="btn" onclick="addProduct()">পণ্য যোগ করুন</button>
+<h3 style="margin-top:20px">Orders: ${JSON.parse(localStorage.getItem('kinoOrders')||'[]').length}</h3>`);
+}
+function addProduct(){
+let n=document.getElementById('pn').value, pr=Number(document.getElementById('pp').value), c=document.getElementById('pc').value, i=document.getElementById('pi').value||'📦';
+if(!n||!pr){alert('নাম ও দাম দিন');return}
+adminProducts.push({name:n,price:pr,cat:c,icon:i});products.splice(0,products.length,...adminProducts);render();alert('পণ্য যোগ হয়েছে');closeModal();
+}
+function ordersAdmin(){admin();}
+
+document.querySelector('.cart').onclick=cartView;
+let nav=document.createElement('button');nav.className='navbtn';nav.textContent='📦 Orders';nav.onclick=myOrders;document.querySelector('header').appendChild(nav);
+let ad=document.createElement('button');ad.className='navbtn';ad.textContent='⚙️ Admin';ad.onclick=admin;document.querySelector('header').appendChild(ad);
+updateHeader();
+
+// Kino Chat — demo/local chat. For real cross-device realtime chat, connect Firebase/Supabase.
+const demoUsers=[
+ {name:'Rahim',email:'rahim@kino.demo',online:true,avatar:'👨'},
+ {name:'Karim',email:'karim@kino.demo',online:true,avatar:'🧑'},
+ {name:'Nabila',email:'nabila@kino.demo',online:false,avatar:'👩'},
+ {name:'Kino Support',email:'support@kino.demo',online:true,avatar:'🛍️'}
+];
+let activeChatEmail=null;
+function getChats(){return JSON.parse(localStorage.getItem('kinoChats')||'{}')}
+function saveChats(x){localStorage.setItem('kinoChats',JSON.stringify(x))}
+function chatKey(a,b){return [a,b].sort().join('|')}
+function chat(){
+ if(!currentUser){login();return}
+ openModal(`<div class="chatWrap">
+  <div class="chatTop"><div><h2>💬 Kino Chat</h2><small>একজন user-এর সাথে private chat</small></div><button class="navbtn" onclick="closeModal()">✕</button></div>
+  <div class="chatUsers" id="chatUsers"></div>
+  <div class="chatArea" id="chatArea"><div class="chatEmpty">কথা বলার জন্য একজন user নির্বাচন করুন</div></div>
+ </div>`);
+ renderChatUsers();
+}
+function renderChatUsers(){
+ const el=document.getElementById('chatUsers'); if(!el)return;
+ const users=demoUsers.filter(u=>u.email!==currentUser.email);
+ el.innerHTML=users.map(u=>`<button class="chatUser ${activeChatEmail===u.email?'active':''}" onclick="selectChat('${u.email}')"><span class="avatar">${u.avatar}</span><span><b>${u.name}</b><small>${u.online?'🟢 Online':'⚪ Offline'}</small></span></button>`).join('');
+}
+function selectChat(email){activeChatEmail=email;renderChatUsers();renderConversation()}
+function renderConversation(){
+ const area=document.getElementById('chatArea'); if(!area)return;
+ const u=demoUsers.find(x=>x.email===activeChatEmail); const chats=getChats(); const key=chatKey(currentUser.email,activeChatEmail); const msgs=chats[key]||[];
+ area.innerHTML=`<div class="conversationHead"><span class="avatar">${u.avatar}</span><div><b>${u.name}</b><small>${u.online?'🟢 Online':'⚪ Offline'}</small></div></div>
+ <div class="messages" id="messages">${msgs.length?msgs.map((m,i)=>`<div class="msg ${m.from===currentUser.email?'mine':'theirs'}"><div>${escapeHtml(m.text)}</div><small>${m.time}${m.from===currentUser.email?` · <button onclick="deleteMessage(${i})">মুছুন</button>`:''}</small></div>`).join(''):'<div class="chatEmpty">এখনও কোনো message নেই।</div>'}</div>
+ <form class="sendBox" onsubmit="sendMessage(event)"><input id="msgInput" maxlength="500" placeholder="Message লিখুন..." autocomplete="off"><button class="btn">Send</button></form>`;
+ const msgsEl=document.getElementById('messages'); if(msgsEl)msgsEl.scrollTop=msgsEl.scrollHeight;
+}
+function sendMessage(e){e.preventDefault();const input=document.getElementById('msgInput');if(!input||!input.value.trim()||!activeChatEmail)return;const chats=getChats(),key=chatKey(currentUser.email,activeChatEmail);chats[key]=chats[key]||[];chats[key].push({from:currentUser.email,to:activeChatEmail,text:input.value.trim(),time:new Date().toLocaleTimeString('bn-BD',{hour:'2-digit',minute:'2-digit'})});saveChats(chats);input.value='';renderConversation()}
+function deleteMessage(i){const chats=getChats(),key=chatKey(currentUser.email,activeChatEmail);if(chats[key]){chats[key].splice(i,1);saveChats(chats);renderConversation()}}
+function escapeHtml(t){return String(t).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+let chatBtn=document.createElement('button');chatBtn.className='navbtn';chatBtn.textContent='💬 Chat';chatBtn.onclick=chat;document.querySelector('header').appendChild(chatBtn);
+</script>
+
+<script id="kino-shorts-js">
+(function(){
+  const cards=document.querySelectorAll('.kino-short video');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.play().catch(()=>{}); }
+      else e.target.pause();
+    });
+  },{threshold:.55});
+  cards.forEach(v=>observer.observe(v));
+})();
+function toggleKinoVideo(btn){
+  const v=btn.parentElement.querySelector('video');
+  v.muted=!v.muted;
+  btn.textContent=v.muted?'🔇':'🔊';
+}
+function kinoShortCart(btn){
+  const card=btn.closest('.kino-short');
+  const product={name:card.dataset.product,price:Number(card.dataset.price),qty:1};
+  let cart=JSON.parse(localStorage.getItem('kinoCart')||'[]');
+  const old=cart.find(x=>x.name===product.name);
+  if(old) old.qty=(old.qty||1)+1; else cart.push(product);
+  localStorage.setItem('kinoCart',JSON.stringify(cart));
+  btn.textContent='✓';
+  setTimeout(()=>btn.textContent='🛒',900);
+  if(typeof updateCartCount==='function') updateCartCount();
+  else if(typeof renderCart==='function') renderCart();
+}
+function kinoShortBuy(btn){
+  kinoShortCart(btn);
+  const card=btn.closest('.kino-short');
+  const productName=encodeURIComponent(card.dataset.product);
+  // Use existing product/search flow when available; otherwise show a simple confirmation.
+  if(typeof openCheckout==='function'){
+    openCheckout();
+  }else if(typeof showCart==='function'){
+    showCart();
+  }else{
+    alert(decodeURIComponent(productName)+' cart-এ যোগ হয়েছে। Checkout থেকে অর্ডার করুন।');
+  }
+}
+</script>
+
+</body>
+</html>
